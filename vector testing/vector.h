@@ -36,7 +36,7 @@ void vector_add(vector *V, int k) {
 void vector_print(vector V, FILE * out) {
 	int i;
 	for(i=0;i<V.full;i++) {
-		fprintf(out,"%d\n", V[i]);
+		fprintf(out,"%d\n", V.in[i]);
 	}
 	return;
 }
@@ -46,12 +46,17 @@ typedef struct dbl_vector {
 	int size;
 	int full;
 	} dbl_vector;
+	
+// `1234567890-=
+// ~!@#$%^&*()_+
+// {}:"|<>?,./;'
 
 dbl_vector dbl_vector_init() {
 	dbl_vector D;
 	D.size = 1;
-	D.full=0;
-	D.in=(vector *)malloc(sizeof(vector));
+	D.full=0;!
+	vector V = vector_init();
+	D.in=&;
 	}
 	
 void dbl_vector_add(dbl_vector *D, vector V) { // CHANGE !!
@@ -73,8 +78,8 @@ void dbl_vector_add(dbl_vector *D, vector V) { // CHANGE !!
 void dbl_vector_print(dbl_vector D, FILE * out) {
 	int i,j;
 	for(i=0;i<D.full;i++) {
-		for(j=0;j<D.in[i];j++) {
-			fprintf(out, "%d ", D.in[i][j]);
+		for(j=0;j<D.in[i].full;j++) {
+			fprintf(out, "%d ", D.in[i].in[j]);
 		}
 		fprintf(out, "\n");
 	}
