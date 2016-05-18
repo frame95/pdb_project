@@ -30,7 +30,7 @@ class atom {
 			return;
 		}
 
-	}
+	};
 
 float distance (atom A, atom B) {
 	return sqrt( (A.coord[0]-B.coord[0])^2+(A.coord[1]-B.coord[1])^2+(A.coord[2]-B.coord[2])^2);
@@ -46,7 +46,7 @@ class protein {
 		void protein::read(FILE * input) {
 			int i;
 			space.read(input);
-			for(i=0;i<space.size();i++) {
+			for(i=0;i<space.adj.size();i++) {
 				content[i].read(input);
 			}
 			return;
@@ -58,18 +58,19 @@ class protein {
 			for(i=0;i<content.size();i++) {
 				content[i].write(output);
 			}			
-
+			return;
 		}
 
 		void protein::add_atom(atom A) {
 			content.push_back(A);
 			space.add_node();
+			return;
 		}
 
 		void protein::link() { // rough version
 			int i,j; float d;
-			for(i=0; i<space.size(); i++) {
-				for(j=i+1; j<space.size(); j++) {
+			for(i=0; i<space.adj.size(); i++) {
+				for(j=i+1; j<space.adj.size(); j++) {
 					d=distance(content[i],content[j]);
 					if((d <= 3.2) && ( d>=2) ){
 						space.add_edge(i,j);
@@ -79,7 +80,7 @@ class protein {
 			return;
 		}
 
-	}
+	};
 
 
 

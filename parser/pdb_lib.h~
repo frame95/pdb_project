@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "graph.h"
-#include <math.h>
 
 using namespace std;
 
@@ -32,10 +31,6 @@ class atom {
 
 	}
 
-float distance (atom A, atom B) {
-	return sqrt( (A.coord[0]-B.coord[0])^2+(A.coord[1]-B.coord[1])^2+(A.coord[2]-B.coord[2])^2);
-	}
-
 class protein {
 	
 	public:
@@ -44,20 +39,11 @@ class protein {
 		protein::protein();
 		
 		void protein::read(FILE * input) {
-			int i;
 			space.read(input);
-			for(i=0;i<space.size();i++) {
-				content[i].read(input);
-			}
-			return;
+			for(i=0;i<space.size();i++) 
 		}
 
 		void protein::write(FILE * output) {
-			int i;
-			space.write(output);
-			for(i=0;i<content.size();i++) {
-				content[i].write(output);
-			}			
 
 		}
 
@@ -66,17 +52,8 @@ class protein {
 			space.add_node();
 		}
 
-		void protein::link() { // rough version
-			int i,j; float d;
-			for(i=0; i<space.size(); i++) {
-				for(j=i+1; j<space.size(); j++) {
-					d=distance(content[i],content[j]);
-					if((d <= 3.2) && ( d>=2) ){
-						space.add_edge(i,j);
-					}
-				}
-			}
-			return;
+		void protein::link() {
+
 		}
 
 	}
