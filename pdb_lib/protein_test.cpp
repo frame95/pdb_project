@@ -9,38 +9,55 @@ int main(int argc, char *argv[] ) {
 	printf("FIRST SECTION : ATOM ---------------	\n"); getchar();
 
 	printf(" ** INIZIALIZZAZIONE ** \n"); getchar();
-	atom A(0,1.22,4.3,1,72);
+	atom A(0,1.22,4.3,1,72, 'C');
 	
 	printf(" ** SCRITTURA ** \n"); getchar();
 	FILE *fout;
-	fout =fopen(argv[1], "w");
+	fout =fopen(argv[1], "w+");
 	A.write(fout);
 	fclose(fout);
 	
 	printf(" ** LETTURA ** \n"); getchar();
-	FILE *fin;
+	FILE *fin; atom B;
 	fin =fopen(argv[1], "r");
-	A.read(fin);
-	A.write(stdout);
+	B.read(fin);
+	B.write(stdout);
 	fclose(fin);
 	
 	printf("SECOND SECTION: PROTEIN ------------- \n"); getchar();
 	
 	printf(" ** INIZIALIZZAZIONE ** \n"); getchar();
-	protein P; int check=1;
+	protein P; int check=1; atom C;
 	while(check==1) {
 		printf("Vuoi aggiungere un atomo (1 si, 0 no)?\n");
 		cin >> check;
 		if(check==1) {
-			atom A;
 			printf("Inserisci le tre coordinate:\n");
-			cin >> A.coord[0] >> A.coord[1] >> A.coord[2];
+			cin >> C.coord[0] >> C.coord[1] >> C.coord[2];
 			printf("Inserisci il numero seriale:\n");
-			cin >> A.serial;
+			cin >> C.serial;
 			printf("Inserisci il numero di catena:\n");
-			cin >> A.chainId;
+			cin >> C.chainId;
+			printf("Inserisci il tipo:\n");
+			cin >> C.type;
+			P.add_atom(C);
 		}
-		P.add_atom(A);
+		
 	}
+	
+	printf(" ** LINKING ** \n"); getchar();
+	P.link();
+	
+	printf(" ** SCRITTURA ** \n"); getchar();
+	fout=fopen(argv[1], "w+");
+	P.write(fout);
+	fclose(fout);
+	
+	printf(" ** LETTURA ** \n"); getchar();
+	fin=fopen(argv[1], "r"); protein Q;
+	Q.read(fin);
+	Q.write(stdout);
+	fclose(fin);	
+	
 	return 0;
 }

@@ -14,26 +14,30 @@ class atom {
 		float coord[3];
 		int serial;
 		int chainId;
+		char type;
 		atom(){};
-		atom(float coord1, float coord2,float coord3,int ser,int cha) {
+		atom(float coord1, float coord2,float coord3,int ser,int cha, char ty) {
 			serial=ser;
 			coord[0]=coord1;
 			coord[1]=coord2;
 			coord[2]=coord3;
 			chainId=cha;
+			type=ty;
 		}
 	
 		void write(FILE * output) {
-			fprintf(output, "%d\n", serial);
-			fprintf(output, "%f %f %f\n", coord[0], coord[1], coord[2]);
-			fprintf(output, "%d\n", chainId);
+			fprintf(output, "%d ", serial);
+			fprintf(output, "%d ", chainId);
+			fprintf(output, "%f %f %f ", coord[0], coord[1], coord[2]);
+			fprintf(output, "%c\n", type);
 			return;
 		}
 
-		void read( FILE * input) {
+		void read( FILE * input) { 
 			fscanf(input, "%d", &serial);
-			fscanf(input, "%f %f %f", &coord[0], &coord[1], &coord[2]);
 			fscanf(input, "%d", &chainId);
+			fscanf(input, "%f %f %f", &coord[0], &coord[1], &coord[2]);
+			fscanf(input, " %c", &type);
 			return;
 		}
 		
@@ -57,12 +61,23 @@ class protein {
 		void read(FILE * input) {
 			int i;
 			space.read(input);
-			for(i=0;i<space.adj.size();i++) {
+			content.resize(space.adj.size());
+			for(i=0;i<content.size();i++) {
 				content[i].read(input);
 			}
 			return;
 		}
-
+		
+		void plain_read(FILE * input) {
+			int i,n; atom C;
+			fscanf(input, "%d", &n);
+			for(i=0;i<n;i++) {
+				C.read(input);
+				add_atom(C);
+			}
+			return;		
+		}
+		
 		void write(FILE * output) {
 			int i;
 			space.write(output);
