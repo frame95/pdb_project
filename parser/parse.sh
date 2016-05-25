@@ -1,7 +1,6 @@
-for F in `find ../clean_data`
+for F in `find ../clean_data/ -type f`
 do
 	echo $F
+	./linker $F
 done
-	
-#	./linker ../clean_data/$F
 	
