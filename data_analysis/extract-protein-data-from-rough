@@ -1,0 +1,36 @@
+#!/bin/bash
+
+for file in $(find ../rough_data -iname "*.ent"); do
+
+echo "Processing $file";
+	nuovo=$(basename "$file" ".ent");
+
+awk '
+# Programma in awk per estrarre le informazioni che ci servono da un .pdb
+BEGIN {
+	totalatoms = 0;
+}
+# Solo per il primo passaggio contiamo quanti atomi ci sono
+NR == FNR {
+	if ($1 == "ATOM") { totalatoms++ }
+	next
+}
+
+# Poi nella prima riga del secondo scriviamo quanti atomi in totale
+FNR == 1 { print totalatoms; }
+
+# Mentre in tutte le altre stampiamo gli atomi
+{
+	# Per ogni linea viene eseguito questo
+	if ($1 == "ATOM") {
+		# $2 è l ID dell atomo
+		# $6 è l ID dell amminoacido
+		# $7, $8, $9 sono le coordinate
+		# $12 è il tipo di atomo [O, N, ..]
+
+		print $2, $6, $7, $8, $9, $12;
+	}
+}
+END { }' "$file" "$file" > ../clean_data/"$nuovo";
+
+done
