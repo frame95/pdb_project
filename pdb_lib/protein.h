@@ -12,12 +12,10 @@ class atom {
 	
 	public:
 		float coord[3];
-		int serial;
 		int chainId;
 		char type;
 		atom(){};
-		atom(float coord1, float coord2,float coord3,int ser,int cha, char ty) {
-			serial=ser;
+		atom(float coord1, float coord2,float coord3,int cha, char ty) {
 			coord[0]=coord1;
 			coord[1]=coord2;
 			coord[2]=coord3;
@@ -26,7 +24,6 @@ class atom {
 		}
 	
 		void write(FILE * output) {
-			fprintf(output, "%d ", serial);
 			fprintf(output, "%d ", chainId);
 			fprintf(output, "%f %f %f ", coord[0], coord[1], coord[2]);
 			fprintf(output, "%c\n", type);
@@ -34,7 +31,6 @@ class atom {
 		}
 
 		void read( FILE * input) { 
-			fscanf(input, "%d", &serial);
 			fscanf(input, "%d", &chainId);
 			fscanf(input, "%f %f %f", &coord[0], &coord[1], &coord[2]);
 			fscanf(input, " %c", &type);
@@ -59,10 +55,16 @@ class protein {
 		protein(){};
 		
 		void read(FILE * input) {
-			int i;
+			printf("Entering protein reading.\n"); getchar();
+			int i,a;
+			printf("Reading graph.\n"); getchar();
 			space.read(input);
+			printf("Resizing content to %d. \n", space.adj.size()); getchar();
 			content.resize(space.adj.size());
 			for(i=0;i<content.size();i++) {
+				printf("reading dummy character (i=%d).\n",i); getchar();
+				fscanf(input, "%d", a);
+				printf("Reading atom.\n"); getchar();
 				content[i].read(input);
 			}
 			return;
@@ -82,6 +84,7 @@ class protein {
 			int i;
 			space.write(output);
 			for(i=0;i<content.size();i++) {
+				fprintf(output, "%d ", i);
 				content[i].write(output);
 			}			
 			return;
@@ -111,6 +114,3 @@ class protein {
 
 
 #endif
-
-/* 
-*/
