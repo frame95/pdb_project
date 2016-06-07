@@ -1,0 +1,2 @@
+Massima componente connessa indotta comune trovata: 4374
+Garanzia: la soluzione è il 100,00% della soluzione ottima.

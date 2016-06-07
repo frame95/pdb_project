@@ -1,15 +1,17 @@
 #include <stdio.h>
+#include <fstream>
+#include <stdlib.h>
 #include <vector>
 #include "./pdb_lib2.0/linear_protein.h"
 
 using namespace std;
 
-int main() {
+int main(int argc, char * argv[]) {
 	FILE *weight_file, *dictionary,*fout;
 	ifstream fin_A, fin_B;
 	int i,j;
-	fin_A.open("./input/proteina_A.txt");
-	fin_B.open("./input/proteina_B.txt");
+	fin_A.open(argv[1]);
+	fin_B.open(argv[2]);
 	fout=fopen("result.txt", "a");
 	weight_file=fopen("./weight/ammino_weight.txt", "r");
 	dictionary=fopen("./weight/ammino_dictionary.txt", "r");
@@ -24,20 +26,20 @@ int main() {
 	}
 	
 	//LETTURA DIZIONARIO
-	char D[20][3];
+	char D[20][3]; int dummy;
 	for(i=0;i<20;i++) {
-		fscanf(dictionary, "%s", &D[i]);
+		fscanf(dictionary, "%d %s", &dummy, &D[i]);
 	}
 	
 	//LETTURA PROTEINE
 	protein A,B;
-	A.read(fin_A); B.read(fin_B); //da implementare
+	A.read(&fin_A, D); B.read(&fin_B, D);
 	
 	// ALGORITMO RISOLUTIVO
 	int result=0;
 	for(i=0;i<A.Subunit.size();i++) {
 		for(j=0;j<B.Subunit.size();j++) {
-				result=max(result, A.Subunit[i].match(B.Subunit[j])); //da implementare match e max
+				result=max(result, A.Subunit[i].match(B.Subunit[j], M)); 
 		}
 	}
 	

@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 #include <fstream>
 #include <vector>
 #include <string>
@@ -25,13 +26,16 @@ class amminoacid {
 		amminoacid(){};
 		
 		int identify(char dictionary[20][3]) {
+			//printf("Processing %.3s\n", ResSeqName); getchar();
 			int i; int check;
 			for(i=0;i<20;i++){
+				//printf("Comparing with %.3s.\n",dictionary[i]); getchar();
 				check=1; 
 				if(dictionary[i][0] != ResSeqName[0]) check=0; 
 				if(dictionary[i][1] != ResSeqName[1]) check=0; 
 				if(dictionary[i][2] != ResSeqName[2]) check=0; 
 				if(check == 1) {
+					//printf("Result: %d.\n", i);
 					ResId=i; 
 					return 1;
 					}
@@ -40,7 +44,7 @@ class amminoacid {
 		}
 		
 		void print(FILE *output) {
-			fprintf(output, "%s (%d) at %d\n", ResSeqName, ResId, ResSeqNum);
+			fprintf(output, "%.3s (%d) at %d\n", ResSeqName, ResId, ResSeqNum);
 			return;
 		
 		}
@@ -75,7 +79,7 @@ class polypeptid {
 			}
 			for(i=2;i<=N+M;i++) {
 				for(j=max(1, i-M);j<=min(N,i-1);j++) {
-					dp[j][i-j] = dp[j-1][i-j-1]+weight[Seq.at(j).ResId][B.Seq.at(i-j).ResId];
+					dp[j][i-j] = dp[j-1][i-j-1]+weight[Seq.at(j-1).ResId][B.Seq.at(i-j-1).ResId];
 				}
 			}
 			int result=0;
@@ -95,30 +99,42 @@ class protein {
 		vector<polypeptid> Subunit;
 		protein(){};
 		
-		void read(ifstream input, char dictionary[20][3]) {
+		void read(ifstream* input, char dictionary[20][3]) {
 			string line;
 			int counter=0;
 			int actual_resnum=-1;
 			char actual_unit='Z';
-			while(getline(input,line)) {
+			while(getline(*input,line)) {
+
 				if((line.substr(0,4).compare("ATOM") == 0) ) {
-					
+					//printf("There's atom over there!\n");
+					//cout << line <<endl;
+					//getchar();
 					if(line.at(22) != actual_unit) {
+						//printf("Change of unit.\n"); getchar();
 						Subunit.resize(Subunit.size()+1);
-						Subunit.at(Subunit.size()-1).chainId=line.at(22);
+						Subunit.back().chainId=line.at(22);
 						actual_unit=line.at(22);
 					} 
 					
 					if(atoi(line.substr(22,26).c_str()) != actual_resnum) {
+						//printf("Change of amminoacid.\n"); getchar();
+						
 						actual_resnum=atoi(line.substr(22,26).c_str());
-						Subunit.at(Subunit.size()-1).Seq.resize(Subunit.at(Subunit.size()-1).Seq.size()+1);
-						Subunit.at(Subunit.size()-1).Seq.at(Subunit.size()-1).ResSeqNum=actual_resnum;
-						Subunit.at(Subunit.size()-1).Seq.at(Subunit.size()-1).ResSeqName[0]=line.at(17);
-						Subunit.at(Subunit.size()-1).Seq.at(Subunit.size()-1).ResSeqName[1]=line.at(18);
-						Subunit.at(Subunit.size()-1).Seq.at(Subunit.size()-1).ResSeqName[2]=line.at(19);
-						if( !Subunit.at(Subunit.size()-1).Seq.at(Subunit.size()-1).identify(dictionary) ) {
-							fprintf(stderr, "An error occurred: cannot identify UNIT %c, SEQNUM %d, RESNAME %s.\n", actual_unit, actual_resnum, line.substr(17,20).c_str() );
+						//printf("Size before: %d\n", Subunit.back().Seq.size());
+						Subunit.back().Seq.resize(Subunit.back().Seq.size()+1);
+						//printf("Resize to %d.\n",Subunit.back().Seq.size()+1);
+						//printf("Actual size: %d", Subunit.back().Seq.size());
+						Subunit.back().Seq.back().ResSeqNum=actual_resnum;
+						Subunit.back().Seq.back().ResSeqName[0]=line.at(17);
+						Subunit.back().Seq.back().ResSeqName[1]=line.at(18);
+						Subunit.back().Seq.back().ResSeqName[2]=line.at(19);
+						if( !Subunit.back().Seq.back().identify(dictionary) ) {
+							fprintf(stderr, "An error occurred: cannot identify UNIT %c, SEQNUM %d, RESNAME %.3s.\n", actual_unit, actual_resnum, line.substr(17,20).c_str() );
+						
 						}
+						//printf("Amminoacid created.\n"); 
+						//print(stdout); getchar();
 					}
 				}
 			}

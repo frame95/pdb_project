@@ -35,7 +35,7 @@ int main() {
 	A.ResSeqName[0]='T';
 	A.ResSeqName[1]='H';
 	A.ResSeqName[2]='R';
-	A.ResSeqNum=13;
+	A.ResSeqNum=1;
 	
 	printf("Identifying %s..\n", A.ResSeqName); getchar();
 	A.identify(dictionary);
@@ -51,7 +51,7 @@ int main() {
 	B.ResSeqName[0]='S';
 	B.ResSeqName[1]='E';
 	B.ResSeqName[2]='R';
-	B.ResSeqNum=12;
+	B.ResSeqNum=2;
 	B.identify(dictionary);
 	P.Seq.push_back(B);
 	P.chainId='A';
@@ -65,6 +65,6 @@ int main() {
 	Q.chainId='B';
 	
 	printf("Matching polypeptid P,Q..\n"); getchar();
-	printf("MCCIS: %d", P.match(Q,weight));
+	printf("MCCIS: %d\n", P.match(Q,weight));
 	return 0;
 }

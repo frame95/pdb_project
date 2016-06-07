@@ -42,6 +42,6 @@ int main(int argc, char *argv[]) {
 	}
 
 	fin.close();	
-
+	printf("%d", mixing_SSBOND + cycling_SSBOND+1);
 	return mixing_SSBOND + cycling_SSBOND;
 }
