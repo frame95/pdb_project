@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "graph.h"
 #include <math.h>
+#include <string>
 
 using namespace std;
 
@@ -12,26 +13,27 @@ class atom {
 	
 	public:
 		float coord[3];
-		int chainId;
+		int ResSeqNum;
+		string ResName;
 		char type;
 		atom(){};
 		atom(float coord1, float coord2,float coord3,int cha, char ty) {
 			coord[0]=coord1;
 			coord[1]=coord2;
 			coord[2]=coord3;
-			chainId=cha;
+			ResSeqNum=cha;
 			type=ty;
 		}
 	
-		void write(FILE * output) {
-			fprintf(output, "%d ", chainId);
+		void write(FILE * output) { //aggiorna con nuovi parametri
+			fprintf(output, "%d ", ResSeqNum);
 			fprintf(output, "%f %f %f ", coord[0], coord[1], coord[2]);
 			fprintf(output, "%c\n", type);
 			return;
 		}
 
-		void read( FILE * input) { 
-			fscanf(input, "%d", &chainId);
+		void read( FILE * input) { //aggiorna con nuovi parametri
+			fscanf(input, "%d", &ResSeqNum);
 			fscanf(input, "%f %f %f", &coord[0], &coord[1], &coord[2]);
 			fscanf(input, " %c", &type);
 			return;
@@ -40,13 +42,21 @@ class atom {
 		float distance (atom A) {
 			return pow(pow(A.coord[0]-coord[0],2)+pow(A.coord[1]-coord[1],2)+pow(A.coord[2]-coord[2],2),0.5);
 			}
+		
+		void readline(string line) {
+			ResSeqNum=atoi(line.substr(22,25).c_str());
+			ResName=line.substr(17,19);
+			coord[0]=atof(line.substr(30,37).c_str());
+			coord[1]=atof(line.substr(38,45).c_str());
+			coord[2]=atof(line.substr(46,53).c_str());
+			type=line.at(77);
+			return;
+		}
+		
 	
 	};
 
-
-	//
-	//}
-
+// Il protein serve se un giorno vorrò reperire la MCCIS come grafo e non solo la grandezza.
 class protein {
 	
 	public:
@@ -55,7 +65,6 @@ class protein {
 		protein(){};
 		
 		void read(FILE * input) {
-			printf("Entering protein reading.\n"); getchar();
 			int i,a;
 			printf("Reading graph.\n"); getchar();
 			space.read(input);
