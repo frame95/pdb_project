@@ -5,6 +5,7 @@ function SSBOND_distribution
 	for i=(0:N) 
 		w(i+1)=sum(v == i);
 	endfor
-	plot(w);
+	plot(v);
+	hist(v);
 	dlmwrite("SSBOND_definitive.txt", w');
 endfunction

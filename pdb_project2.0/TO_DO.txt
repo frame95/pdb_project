@@ -1,0 +1,7 @@
+1. Va fatto un albero delle dipendenze tra file anzitutto, per poter spostare i file senza combinare casini.
+2. Vanno mergiate pdb_lib2.0 e pdb_lib, esaminando effettivamente cosa serve della vecchia libreria.
+3. Va creata una cartella utilities, in cui mettere clean_data.sh, is_protein, is_protein.cpp, pdb_copy.sh, pdb_unzip.sh.
+4. Va creata una cartella body in cui mettere MCCIS.cpp, MCCIS, guarantee.cpp, guarantee
+5. Va riesaminato README.txt
+6. Bisogna liberarsi della cartella principale pdb_project che contiene (inutilmente) pdb_project2.0
+7. Va fatto un bel git push e mandata la mail a grossi!

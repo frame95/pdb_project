@@ -12,4 +12,5 @@ function SSBOND_statistics
 	printf("Mean value of approximation: %d\n", 100*E);
 	printf("Variance: %d\n", 100*V);
 	printf("99 percent of cases the approximation is at least %d\n", 100*abs(E-10*sqrt(V)) );
+	hist(w);
 endfunction

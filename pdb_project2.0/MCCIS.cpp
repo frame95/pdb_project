@@ -44,5 +44,6 @@ int main(int argc, char * argv[]) {
 	}
 	
 	fprintf(fout, "Massima componente connessa indotta comune trovata: %d\n", result);
+	printf("%d", result);
 	return 0;
 }
